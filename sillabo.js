@@ -33,9 +33,12 @@ function syllables( word ) {
   return begin([], word )
 }
 
+const VOCALS = Object.freeze(['a', 'e', 'i', 'o', 'u', '\''])
 const CONSONANTS = Object.freeze([
-  'c', 'n', 't'
-])
+  'b', 'c', 'd', 'f', 'g', 'h',
+  'j,', 'y', 'l', 'm', 'n', 'p',
+  'q', 'r', 's', 't', 'v', 'x',
+  'y', 'w', 'z'])
 
 function begin( syllables, word ) {
 
