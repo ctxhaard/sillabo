@@ -13,6 +13,12 @@ test('splits "boato" into syllables bo-a-to', () => {
   )
 })
 
+test('splits "gatto into syllables gat-to', () => {
+  expect( syllables('gatto')).toEqual(
+    ['gat', 'to']
+  )
+})
+
 test('splits a text into lines', () => {
 
   let text = `

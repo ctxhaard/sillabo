@@ -33,10 +33,10 @@ function syllables( word ) {
   return begin([], word )
 }
 
-const VOCALS = Object.freeze(['a', 'e', 'i', 'o', 'u', '\''])
+const VOCALS = Object.freeze(['a', 'à', 'e', 'è', 'é', 'i', 'ì', 'o', 'ò', 'u', 'ù'])
 const CONSONANTS = Object.freeze([
   'b', 'c', 'd', 'f', 'g', 'h',
-  'j,', 'y', 'l', 'm', 'n', 'p',
+  'j', 'k', 'l', 'm', 'n', 'p',
   'q', 'r', 's', 't', 'v', 'x',
   'y', 'w', 'z'])
 
@@ -73,6 +73,11 @@ function vocal (syllables, before, next ) {
       syllables.push( before )
     }
     return syllables
+  }
+
+  if(VOCALS.includes(before) && CONSONANTS.includes(next.slice(0,1))) {
+    syllables.push(before)
+    return begin(syllables, next);
   }
 
   if(CONSONANTS.includes(next.slice(0,1)))
