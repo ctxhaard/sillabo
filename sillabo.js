@@ -61,8 +61,7 @@ function consonant(syllables, before, next ) {
     return syllables
   }
   if (CONSONANTS.includes(next.slice(0,1))) {
-    syllables.push( before )
-    return begin(syllables, next)
+    return consonantConsonant(syllables, before+next.slice(0,1), next.slice(1))
   }
   return consonantVocal(syllables, before + next.slice(0,1), next.slice(1))
 }
@@ -87,13 +86,45 @@ function vocal (syllables, before, next ) {
 }
 
 function consonantVocal(syllables, before, next) {
+  if (next.length == 0) {
+    syllables.push(before)
+    return syllables
+  }
+
+  if( CONSONANTS.includes(next.slice(0,1)))
+    return consonantVocalConsonant(syllables, before + next.slice(0,1), next.slice(1))
+
   syllables.push(before)
   return begin(syllables, next)
+}
+
+function consonantConsonant(syllables, before, next) {
+  if(next.length == 0) {
+    syllables.push(before)
+    return syllables
+  }
+  syllables.push( before + next.slice(0,1))
+  return begin(syllables, next.slice(1))
 }
 
 function vocalConsonant(syllables, before, next) {
   syllables.push(before)
   return begin(syllables, next)
+}
+
+function consonantVocalConsonant(syllables, before, next) {
+  if(next.length == 0) {
+    syllables.push(before)
+    return syllables
+  }
+
+  if (before.slice(-1) === next.slice(0,1)) {
+    syllables.push(before)
+    return begin(syllables, next)
+  }
+
+  syllables.push(before.slice(0,-1))
+  return begin(syllables, before.slice(-1) + next)
 }
 
 export {

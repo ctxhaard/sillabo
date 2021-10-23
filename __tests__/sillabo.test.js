@@ -19,6 +19,12 @@ test('splits "gatto into syllables gat-to', () => {
   )
 })
 
+test('splits "ritrovai" into ri-tro-va-i', () => {
+  expect( syllables('ritrovai')).toEqual(
+    ['ri', 'tro', 'va', 'i']
+  )
+})
+
 test('splits a text into lines', () => {
 
   let text = `
