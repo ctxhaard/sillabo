@@ -33,12 +33,17 @@ function syllables( word ) {
   return begin([], word )
 }
 
-const VOCALS = Object.freeze(['a', 'à', 'e', 'è', 'é', 'i', 'ì', 'o', 'ò', 'u', 'ù'])
-const CONSONANTS = Object.freeze([
+let _vocals = ['a', 'à', 'e', 'è', 'é', 'i', 'ì', 'o', 'ò', 'u', 'ù']
+_vocals = _vocals.concat(_vocals.map( v => v.toLocaleUpperCase("it")))
+const VOCALS = Object.freeze(_vocals)
+
+let _consonants = [
   'b', 'c', 'd', 'f', 'g', 'h',
   'j', 'k', 'l', 'm', 'n', 'p',
   'q', 'r', 's', 't', 'v', 'x',
-  'y', 'w', 'z'])
+  'y', 'w', 'z']
+  _consonants = _consonants.concat( _consonants.map(c => c.toLocaleUpperCase("it")))
+const CONSONANTS = Object.freeze(_consonants)
 
 function begin( syl, word ) {
 
@@ -74,9 +79,9 @@ function vocal (syl, acc, next ) {
     return syl
   }
 
-  if(VOCALS.includes(acc) && CONSONANTS.includes(next.slice(0,1))) {
-    syl.push(acc)
-    return begin(syl, next);
+  if(syl.length === 0 && CONSONANTS.includes(next.slice(0,1))) {
+    syl.push( acc )
+    return begin( syl, next)
   }
 
   if(CONSONANTS.includes(next.slice(0,1)))
@@ -93,9 +98,7 @@ function consonantVocal(syl, acc, next) {
 
   if( CONSONANTS.includes(next.slice(0,1)))
     return consonantVocalConsonant(syl, acc + next.slice(0,1), next.slice(1))
-
-  syl.push(acc)
-  return begin(syl, next)
+  return consonantVocalVocal(syl, acc + next.slice(0,1), next.slice(1))
 }
 
 function consonantConsonant(syl, acc, next) {
@@ -125,6 +128,28 @@ function consonantVocalConsonant(syl, acc, next) {
 
   syl.push(acc.slice(0,-1))
   return begin(syl, acc.slice(-1) + next)
+}
+
+function consonantVocalVocal(syl, acc, next) {
+  if(next.length == 0) {
+    syl.push(acc)
+    return syl
+  }
+
+  if( CONSONANTS.includes(next.slice(0,1))) {
+    syl.push( acc )
+    return begin( syl, next )
+  }
+
+  return consonantVocalVocalVocal(syl, acc + next.slice(0,1), next.slice(1))
+}
+
+function consonantVocalVocalVocal(syl, acc, next) {
+  syl.push(acc)
+  if(next.length == 0) {
+    return syl
+  }
+  return begin(syl, next)
 }
 
 export {
